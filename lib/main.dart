@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'dashboard/presentation/pages/dashboard.dart';
 import 'iot/api/iot.ws.service.dart';
+import 'tabs/wifi/wifi.tab.dart';
 
 
 
@@ -33,6 +34,7 @@ class MyApp extends ConsumerWidget {
         '/dashboard': (context) => const Dashboard(),
         '/media': (context) => const Multimedia(),
         '/temperature': (context) => const TemperatureTab(),
+        '/wifi': (context) => const WifiTab(),
       },
     );
   }

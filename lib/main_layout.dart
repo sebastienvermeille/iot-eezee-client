@@ -52,6 +52,9 @@ class MainLayout extends ConsumerWidget {
               case 2:
                 Navigator.pushReplacementNamed(context, '/temperature');
                 break;
+              case 3:
+                Navigator.pushReplacementNamed(context, '/wifi');
+                break;
             }
 
             ref.read(activeTabProvider.notifier).setActiveTab(index);
@@ -75,6 +78,11 @@ class MainLayout extends ConsumerWidget {
               icon: Icon(Icons.thermostat_outlined),
               selectedIcon: Icon(Icons.thermostat),
               label: Text('Temperature'),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.wifi_outlined),
+              selectedIcon: Icon(Icons.wifi),
+              label: Text('Wifi'),
             ),
           ],
         ),
