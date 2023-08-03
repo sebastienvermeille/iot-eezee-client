@@ -18,6 +18,9 @@ class _WifiTabState extends State<WifiTab> {
 
   @override
   Widget build(BuildContext context) {
+
+    const double qrCodeSize = 256;
+
     return MainLayout(
         title: 'Wifi network',
         child:
@@ -27,8 +30,9 @@ class _WifiTabState extends State<WifiTab> {
                 children: [
                   Image.network(
                       'http://7.7.7.107:8040/home-automation/wifi/wifi_guest.png',
-                      width: 400,
-                      height: 400),
+                      width: qrCodeSize,
+                      height: qrCodeSize
+                  ),
                 ]
 
               )

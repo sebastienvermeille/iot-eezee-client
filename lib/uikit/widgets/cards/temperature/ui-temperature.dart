@@ -43,11 +43,11 @@ class UiTemperatureWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: isTooCold()
-            ? LinearGradient(colors: [
+            ? const LinearGradient(colors: [
               Colors.blueAccent, Colors.cyanAccent
             ])
             : isTooHot()
-            ? LinearGradient(colors: [
+            ? const LinearGradient(colors: [
               Colors.redAccent, Colors.yellow
             ])
             : const LinearGradient(colors: [
@@ -58,14 +58,37 @@ class UiTemperatureWidget extends StatelessWidget {
             //   Colors.greenAccent, Colors.cyanAccent
             // ]),
         ),
-        child: ListTile(
-          leading: const Icon(Icons.thermostat_outlined),
-          title: Text(label),
-          subtitle: isTooCold() ? const Text('Too cold') : isTooHot() ? const Text('Too warm') : celsiusValue == null ? const Text('Not available') : const Text('Comfortable'),
-          trailing:
-              celsiusValue == null
-            ? Text('-')
-            : Text('$celsiusValue °C')
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              child:
+                const Icon(Icons.thermostat_outlined),
+
+            ),
+            Expanded(
+              child:
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                        children: [
+                          Text(label, style: const TextStyle(fontSize: 40),),
+                          isTooCold() ? const Text('Too cold') : isTooHot() ? const Text('Too warm') : celsiusValue == null ? const Text('Not available') : const Text('Comfortable'),
+                        ]
+                    ),
+                  )
+
+
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child:
+                celsiusValue == null
+                    ? const Text('-')
+                    : Text('$celsiusValue °C', style: const TextStyle(fontSize: 50))
+
+            )
+          ],
         ),
       ),
     );

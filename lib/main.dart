@@ -2,6 +2,7 @@ import 'package:eezee/multimedia/multimedia.dart';
 import 'package:eezee/tabs/temperature/temperature.tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sizer/sizer.dart';
 
 import 'dashboard/presentation/pages/dashboard.dart';
 import 'iot/api/iot.ws.service.dart';
@@ -11,7 +12,7 @@ import 'tabs/wifi/wifi.tab.dart';
 
 void main() {
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: MyApp()
     )
   );
@@ -27,15 +28,20 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var ws = ref.watch(websocketProvider); // init it here for the whole app
 
-    return MaterialApp(
-      title: 'EEZEE',
-      initialRoute: '/dashboard',
-      routes: {
-        '/dashboard': (context) => const Dashboard(),
-        '/media': (context) => const Multimedia(),
-        '/temperature': (context) => const TemperatureTab(),
-        '/wifi': (context) => const WifiTab(),
-      },
+    return Sizer(
+        builder: (context, orientation, deviceType)
+    {
+      return MaterialApp(
+        title: 'EEZEE',
+        initialRoute: '/dashboard',
+        routes: {
+          '/dashboard': (context) => const Dashboard(),
+          '/media': (context) => const Multimedia(),
+          '/temperature': (context) => const TemperatureTab(),
+          '/wifi': (context) => const WifiTab(),
+        },
+      );
+    }
     );
   }
 }
@@ -90,7 +96,7 @@ class _NavRailExampleState extends State<NavRailExample> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
-          Expanded(
+          const Expanded(
             child: Dashboard(),
           ),
 

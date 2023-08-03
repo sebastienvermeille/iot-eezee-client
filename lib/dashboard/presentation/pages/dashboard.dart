@@ -1,6 +1,7 @@
 import 'package:eezee/main_layout.dart';
 import 'package:eezee/uikit/widgets/cards/door/ui-smart-door.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../uikit/widgets/cards/media/ui-smart-music-player.dart';
 import '../../../uikit/widgets/cards/temperature/ui-smart-temperature.dart';
@@ -16,22 +17,46 @@ class Dashboard extends StatelessWidget {
     return MainLayout(
       title: 'Dashboard',
       child:
-        const Column(
-            children: [
-              UiSmartTemperatureWidget(room: "rika"),
-              // Row(
-              //   children: [
-              //     UISmartWeatherCardWidget(zipCode: 3953, outsideThermometer: "outdoor"),
-              //   ],
-              // )
+      Column(
+          children: [
+            Expanded(
+                child:
+                LayoutBuilder(builder: (context, constraints) {
+                  return GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: constraints.maxWidth > 700 ? 2 : 1,
+                        childAspectRatio: 5,
+                      ),
+                      shrinkWrap: false,
+                      children: [
+                        UiSmartTemperatureWidget(room: "rika"),
+                        UiSmartTemperatureWidget(room: "outdoor"),
+                            // UiSmartMusicPlayerWidget(room: "living"),
+                        // UiSmartDoorWidget(location: "main"),
+                      ]
+                  );
+                }
+                )
+            ),
+          ]
+      )
 
-              // UiSmartTemperatureWidget(room: "rika"),
 
-              UiSmartMusicPlayerWidget(room: "living"),
 
-               UiSmartDoorWidget(location: "main"),
-              ]
-        ),
+                  // UISmartWeatherCardWidget(zipCode: 3953, outsideThermometer: "outdoor"),
+
+                  // Row(
+                  //   children: [
+                  //     UiSmartMusicPlayerWidget(room: "living"),
+                  //   ],
+                  // ),
+                  //
+                  // // UiSmartTemperatureWidget(room: "rika"),
+                  //
+                  //
+                  //
+                  //  UiSmartDoorWidget(location: "main"),
+
 
               // SizedBox(
               //   height: 280,

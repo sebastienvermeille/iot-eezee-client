@@ -45,6 +45,7 @@ dependencies:
   flutter_intl: ^0.0.1
   intl: ^0.18.1
   sleek_circular_slider: ^2.0.1
+  sizer: ^2.0.15
 
 
 dev_dependencies:
