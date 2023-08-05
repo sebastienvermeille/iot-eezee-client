@@ -40,19 +40,17 @@ class _MusicPlaylistsDialogWidgetState extends ConsumerState<MusicPlaylistsDialo
             padding: EdgeInsets.all(20),
             child:
               Column(
-                  children: [
-                    for( var channel in state.channels) Row(
-                      children: [
-                        Radio(
-                          value: channel.label,
-                          groupValue: "playlist_office",
-                          onChanged: (value) {
-                            Navigator.pop(context, value);
-                          },
-                        ),
-                        Text(channel.label),
-                      ],
-                    ),
+                children:
+                [
+                  for( var channel in state.channels) RadioListTile(
+                    value: channel.label,
+                    title: Text(channel.label),
+                    dense: false,
+                    groupValue: "radio",
+                    onChanged: (value) {
+                      Navigator.pop(context, value);
+                    },
+                  ),
                   ]
               ),
           ),

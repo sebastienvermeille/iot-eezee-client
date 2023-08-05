@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drop_shadow/drop_shadow.dart';
 import 'package:eezee/iot/api/data/provider/music.player.status.provider.dart';
 import 'package:eezee/iot/api/data/provider/music.track.provider.dart';
-import 'package:eezee/iot/api/data/provider/music.volume.provider.dart';
 import 'package:eezee/multimedia/music.playlists.dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
@@ -21,8 +23,8 @@ class UiMusicPlayerWidget extends ConsumerStatefulWidget {
   @override
   ConsumerState<UiMusicPlayerWidget> createState() => _UiMusicPlayerWidgetState();
 
-  getCover(){
-    return cover ?? "nothing";
+  String? getCover(){
+    return cover;
   }
 
   getTrackName(){
@@ -30,13 +32,32 @@ class UiMusicPlayerWidget extends ConsumerStatefulWidget {
   }
 
   Image? coverImage;
-  getCoverImage() {
+
+  Image getCoverImage()  {
+    coverImage = const Image(image: AssetImage('assets/images/uikit/media/unknown_song.jpg'), height: 128, width: 128);
+
     if(getCover() != null){
-      IotApiService().getBinary(getCover()).then((value) {
-        coverImage = value;
-      });
+      var res = IotApiService().getBinary(getCover() ?? "");
+      res.then((value) {
+        print('Get image content');
+        coverImage = Image(image: NetworkImage(value as String), height: 128, width: 128);
+        return coverImage!;
+
+      }, onError: (ex){
+        coverImage = const Image(image: AssetImage('assets/images/uikit/media/unknown_song.jpg'), height: 128, width: 128);
+        print('no data');
+        return coverImage!;
+
+      }
+      );
+    } else {
+      coverImage = const Image(image: AssetImage('assets/images/uikit/media/unknown_song.jpg'), height: 128, width: 128);
+      return coverImage!;
+
     }
-    return coverImage;
+
+    return coverImage!;
+
   }
 
 }
@@ -57,7 +78,7 @@ class _UiMusicPlayerWidgetState extends ConsumerState<UiMusicPlayerWidget> {
   Widget build(BuildContext context) {
 
 
-
+    const double iconSize=50;
 
     return Card(
       margin: const EdgeInsets.all(10),
@@ -65,22 +86,47 @@ class _UiMusicPlayerWidgetState extends ConsumerState<UiMusicPlayerWidget> {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 5,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient:LinearGradient(colors: [
             Colors.blueAccent, Colors.cyanAccent
           ])
           ,
         ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.label),
-                // widget.getCoverImage(),
-
-                Image(
-                  height: 128,
-                  width: 128,
-                  image: NetworkImage(widget.getCover()),
+                AutoSizeText(widget.label, maxLines: 1, style: const TextStyle(fontSize: 20)),
+                const Expanded(child:
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child:
+                    FittedBox(
+                      child:
+                        DropShadow(
+                          child:
+                            Image(image: AssetImage('assets/images/uikit/media/unknown_song.jpg'), height: 128, width: 128)
+                            // widget.getCoverImage(),
+                            // CachedNetworkImage(
+                            //   imageUrl: widget.cover as String,
+                            //   imageBuilder: (context, imageProvider) =>
+                            //       Container(
+                            //         decoration: BoxDecoration(
+                            //           image: DecorationImage(
+                            //             image: imageProvider,
+                            //             fit: BoxFit.fitWidth,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //   placeholder: (context,  url) =>
+                            //     CircularProgressIndicator(),
+                            //   errorWidget: (context, url, error) =>
+                            //   Icon(Icons.error),
+                            // )
+                        ),
+                    ),
+                  ),
                 ),
+
                 // Text(widget.getTrackName()),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -99,22 +145,22 @@ class _UiMusicPlayerWidgetState extends ConsumerState<UiMusicPlayerWidget> {
                         IotApiService().pauseMusic(widget.label);
                         widget.states?.invalidate(musicPlayerStatusProvider(widget.label));
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.pause,
-                        size: 24.0,
+                        size: iconSize,
                       ),
-                      label: Text(""),
+                      label: const Text(""),
                     )
                     : TextButton.icon(
                         onPressed: () {
                           IotApiService().playMusic(widget.label);
                           widget.states?.invalidate(musicPlayerStatusProvider(widget.label));
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.play_arrow,
-                          size: 24.0,
+                          size: iconSize,
                         ),
-                        label: Text(""),
+                        label: const Text(""),
                       )
                     ,
                     // TextButton.icon(     // <-- TextButton
@@ -130,7 +176,7 @@ class _UiMusicPlayerWidgetState extends ConsumerState<UiMusicPlayerWidget> {
                     TextButton.icon(     // <-- TextButton
                       onPressed: () {
                         showDialog(context: context, builder: (BuildContext context){
-                          return MusicPlaylistsDialogWidget();
+                          return const MusicPlaylistsDialogWidget();
                         }).then((selectedRadioChannel){
                           if(selectedRadioChannel != null){
                             IotApiService().definePlaylist(widget.label, selectedRadioChannel).then((result) {
@@ -153,11 +199,11 @@ class _UiMusicPlayerWidgetState extends ConsumerState<UiMusicPlayerWidget> {
                           }
                         });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.radio,
-                        size: 24.0,
+                        size: iconSize,
                       ),
-                      label: Text(""),
+                      label: const Text(""),
                     ),
                   ]
                 ),

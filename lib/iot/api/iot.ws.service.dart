@@ -26,30 +26,30 @@ final websocketProvider = StreamProvider<List<String>>((ref) async* {
       // print(message);
       var parsedJson = jsonDecode(message);
       // print('$parsedJson');
-      print(parsedJson["topic"]);
+      // print(parsedJson["topic"]);
 
 
       String topic = parsedJson["topic"];
       if(topic.startsWith("sensors/temperature/")){
-        print("received a change for a temperature sensor: ");
+        // print("received a change for a temperature sensor: ");
 
         var parts = topic.split("/");
         var room = parts.last;
-        print(room);
+        // print(room);
 
-        print("${"refreshed " + room} from ws");
+        // print("${"refreshed " + room} from ws");
         ref.refresh(temperatureSensorProvider(room));
       } else if(topic.startsWith("media/audio/status/")){
         var parts = topic.split("/");
         var room = parts.last;
-        print("received a change for sonos player status :$room");
+        // print("received a change for sonos player status :$room");
 
         ref.refresh(musicPlayerStatusProvider(room));
 
       } else if(topic.startsWith("media/audio/volume/")){
         var parts = topic.split("/");
         var room = parts.last;
-        print("received a change for sonos player volume : $room");
+        // print("received a change for sonos player volume : $room");
 
         ref.refresh(musicVolumeProvider(room));
 

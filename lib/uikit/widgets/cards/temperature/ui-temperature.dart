@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class UiTemperatureWidget extends StatelessWidget {
@@ -64,16 +65,21 @@ class UiTemperatureWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child:
                 const Icon(Icons.thermostat_outlined),
-
             ),
             Expanded(
               child:
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(5),
                     child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(label, style: const TextStyle(fontSize: 40),),
-                          isTooCold() ? const Text('Too cold') : isTooHot() ? const Text('Too warm') : celsiusValue == null ? const Text('Not available') : const Text('Comfortable'),
+                          AutoSizeText(
+                            label,
+                            style: const TextStyle(fontSize: 20),
+                            maxLines: 1,
+                          ),
+                              isTooCold() ? const AutoSizeText('Too cold') : isTooHot() ? const AutoSizeText('Too warm') : celsiusValue == null ? const AutoSizeText('Not available') : const AutoSizeText('Comfortable'),
                         ]
                     ),
                   )
@@ -85,7 +91,11 @@ class UiTemperatureWidget extends StatelessWidget {
               child:
                 celsiusValue == null
                     ? const Text('-')
-                    : Text('$celsiusValue °C', style: const TextStyle(fontSize: 50))
+                    : AutoSizeText(
+                        '$celsiusValue °C',
+                        style: const TextStyle(fontSize: 50),
+                        maxLines: 1,
+                      ),
 
             )
           ],
